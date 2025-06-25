@@ -1,26 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Table } from './entities/table.entity';
 
 @Injectable()
 export class TablesService {
-  create(createTableDto: CreateTableDto) {
-    return 'This action adds a new table';
+  constructor(
+    @InjectRepository(Table)
+    private readonly tableRepository: Repository<Table>,
+  ) {}
+
+  async create(createTableDto: CreateTableDto): Promise<Table> {
+    const newTable = this.tableRepository.create(createTableDto);
+    return this.tableRepository.save(newTable);
   }
 
-  findAll() {
-    return `This action returns all tables`;
+  async findAll(): Promise<Table[]> {
+    return this.tableRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} table`;
+  async findOne(id: number): Promise<Table> {
+    const table = await this.tableRepository.findOneBy({ id });
+    if (!table) {
+      throw new NotFoundException('Not Found');
+    }
+    return table;
   }
 
-  update(id: number, updateTableDto: UpdateTableDto) {
-    return `This action updates a #${id} table`;
+  async update(id: number, updateTableDto: UpdateTableDto): Promise<Table> {
+    await this.tableRepository.update(id, updateTableDto);
+    return this.findOne(id);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} table`;
+  async remove(id: number): Promise<void> {
+    await this.tableRepository.delete(id);
   }
 }
