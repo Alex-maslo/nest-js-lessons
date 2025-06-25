@@ -5,7 +5,7 @@
   "compilerOptions": {
     "deleteOutDir": true
   },
-  "generateOption": {
+  "generate": {
     "spec": false
   }
 }
