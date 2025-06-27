@@ -7,12 +7,12 @@ import { IJWTPayload } from './tables/interface/jwt-payload.interface';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly configService: ConfigService) {
-    // const jwtSecret = configService.get<string>('JWT_SECRET') || '';
+    const jwtSecret = configService.get<string>('JWT_SECRET') || '';
 
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
-      secretOrKey: 'test_secret',
+      secretOrKey: jwtSecret,
     });
   }
 
