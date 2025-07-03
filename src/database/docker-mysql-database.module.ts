@@ -1,17 +1,25 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { SharedModule } from '../shared/shared.module';
+import { EnvService } from '../shared/services/env.service';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'user',
-      password: 'userpassword',
-      database: 'mydatabase',
-      entities: [__dirname + '/../**/*.entity.{ts,js}'],
-      synchronize: true, // тільки для розробки
+    SharedModule,
+    TypeOrmModule.forRootAsync({
+      imports: [SharedModule],
+      useFactory: (envService: EnvService) => ({
+        type: envService.dbType as 'mysql',
+        host: envService.dbHost,
+        port: envService.dbPort,
+        username: envService.dbUsername,
+        password: envService.dbPassword,
+        database: envService.dbDatabase,
+        migrations: [__dirname + '/../migrations/*{.ts, .js}'],
+        entities: [__dirname + '/../**/*.entity.{ts,js}'],
+        synchronize: false,
+      }),
+      inject: [EnvService],
     }),
   ],
 })
