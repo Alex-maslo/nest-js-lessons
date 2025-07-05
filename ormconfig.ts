@@ -12,7 +12,7 @@ export default new DataSource({
   username: envService.dbUsername,
   password: envService.dbPassword,
   database: envService.dbDatabase,
-  migrations: [__dirname + '/../migrations/*{.ts, .js}'],
+  migrations: [__dirname + '/src/migrations/*{.ts, .js}'],
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
   synchronize: false,
 });
