@@ -5,6 +5,8 @@ import { TablesModule } from './tables/tables.module';
 import { MysqlDatabaseModule } from './database/docker-mysql-database.module';
 import { SharedModule } from './shared/shared.module';
 import { EnvService } from './shared/services/env.service';
+import { AppService } from './app.service';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -15,8 +17,8 @@ import { EnvService } from './shared/services/env.service';
     SharedModule,
   ],
 
-  controllers: [],
-  providers: [EnvService],
+  controllers: [AppController],
+  providers: [EnvService, AppService],
   exports: [EnvService],
 })
 export class AppModule {}
