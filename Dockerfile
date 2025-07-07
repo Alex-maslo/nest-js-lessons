@@ -1,4 +1,4 @@
-FROM node:20-alpine
+FROM node:22-alpine
 
 LABEL maintainer='Some DEV'
 
@@ -8,4 +8,4 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm i --production
 
-COPY dist/  ./dist
+COPY dist/ ./dist

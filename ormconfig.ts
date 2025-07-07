@@ -14,5 +14,5 @@ export default new DataSource({
   database: envService.dbDatabase,
   migrations: [__dirname + '/src/migrations/*{.ts, .js}'],
   entities: [__dirname + '/../**/*.entity.{ts,js}'],
-  synchronize: true,
+  synchronize: false,
 });

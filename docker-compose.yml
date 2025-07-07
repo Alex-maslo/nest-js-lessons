@@ -6,23 +6,37 @@ services:
       - .env
     ports:
       - "3001:3001"
+    depends_on:
+      db:
+        condition: service_healthy
     command: >
-      sh -c "npm run typeorm -- migration:run --dataSource ./dist/ormconfig.js && node dist/src/main.js"
-  
+      sh -c "node dist/src/main.js"
+
 
   db:
     image: mysql:8
+    volumes:
+      - mysql-data:/var/lib/mysql
     container_name: mysql-container
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_ROOT_PASSWORD: superpass
       MYSQL_DATABASE: my-database
       MYSQL_USER: user
       MYSQL_PASSWORD: userpassword
     ports:
       - "3306:3306"
-    volumes:
-      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "user", "-psuperpass" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+
 
 volumes:
   mysql-data:
+
+
+
+#  sh -c "npm run typeorm -- migration:run --dataSource ./dist/ormconfig.js && node dist/src/main.js"
