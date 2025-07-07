@@ -17,7 +17,7 @@ import { EnvService } from '../shared/services/env.service';
         database: envService.dbDatabase,
         migrations: [__dirname + '/../migrations/*{.ts, .js}'],
         entities: [__dirname + '/../**/*.entity.{ts,js}'],
-        synchronize: false,
+        synchronize: true,
       }),
       inject: [EnvService],
     }),

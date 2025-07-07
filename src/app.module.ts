@@ -4,9 +4,10 @@ import { AuthModule } from './auth/auth.module';
 import { TablesModule } from './tables/tables.module';
 import { MysqlDatabaseModule } from './database/docker-mysql-database.module';
 import { SharedModule } from './shared/shared.module';
-import { EnvService } from './shared/services/env.service';
-import { AppService } from './app.service';
+import { APP_FILTER } from '@nestjs/core';
+import { GlobalExceptionFilter } from './shared/filters/global-exception.filter';
 import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -18,7 +19,13 @@ import { AppController } from './app.controller';
   ],
 
   controllers: [AppController],
-  providers: [EnvService, AppService],
-  exports: [EnvService],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
+
+    AppService,
+  ],
 })
 export class AppModule {}

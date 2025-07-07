@@ -33,6 +33,6 @@ export class EnvService {
     this.dbPort = configService.get<number>('DB_PORT', 3306);
     this.dbUsername = configService.get<string>('DB_USERNAME', 'user');
     this.dbPassword = configService.get<string>('DB_PASSWORD', 'userpassword');
-    this.dbDatabase = configService.get<string>('DB_DATABASE', 'mydatabase');
+    this.dbDatabase = configService.get<string>('DB_DATABASE', 'my-database');
   }
 }
